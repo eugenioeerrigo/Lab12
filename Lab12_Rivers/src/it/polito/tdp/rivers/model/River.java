@@ -7,7 +7,7 @@ public class River {
 	private int id;
 	private String name;
 	private double flowAvg;
-	private List<Flow> flows;
+	private List<Flow> flows;  
 	
 	public River(int id) {
 		this.id = id;
@@ -35,7 +35,10 @@ public class River {
 	}
 	
 	public double getFlowAvg() {
-		return flowAvg;
+		double sum = 0;
+		for(Flow f : this.flows)
+			sum += f.getFlow();
+		return sum/flows.size();
 	}
 
 	public void setFlowAvg(double flowAvg) {
