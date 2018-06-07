@@ -32,7 +32,7 @@ public class Simulatore {
 		
 		for(Flow f : dao.getFlowsFromRiver(r)) {
 			double flowOut = flowOutMin;
-			if(Math.random() > 0.95) 
+			if(Math.random() <= 0.05) 
 				flowOut = 10*flowOutMin;
 		
 			queue.add(new Event(EventType.IN, f.getDay(), f.getFlow(), flowOut));
@@ -52,20 +52,39 @@ public class Simulatore {
 		switch(e.getTipo()) {
 		
 		case IN:
-			occupazione += e.flowIn;
 			
-			if(occupazione>capienzaTot) {
-				System.out.println("here1");
-				occupazione = capienzaTot;
+			if(e.flowIn > e.flowOut) {
+				
+				if((e.flowIn-e.flowOut)+occupazione > capienzaTot) {
+					occupazione = capienzaTot;
+				}else {
+					occupazione += (e.flowIn-e.flowOut);
+				}
+				
+			}else if(e.flowIn < e.flowOut) {
+				
+				if((e.flowIn-e.flowOut) < occupazione)
+					noErogMin++;
+				else 
+					occupazione += (e.flowIn-e.flowOut);
+				
 			}
 			
-			if(occupazione<e.flowOut) {
-				System.out.println("here2");
-				occupazione = 0;
-				noErogMin++;
-			}else
-				occupazione -= e.flowOut;
-				System.out.println("here3");
+			
+//			occupazione += e.flowIn;
+//			
+//			if(occupazione>capienzaTot) {
+//				System.out.println("here1");
+//				occupazione = capienzaTot;
+//			}
+//			
+//			if(occupazione<e.flowOut) {
+//				System.out.println("here2");
+//				occupazione = 0;
+//				noErogMin++;
+//			}else
+//				occupazione -= e.flowOut;
+//				System.out.println("here3");
 			
 //			if(e.flowIn>e.flowOut) {
 //				occupazione += e.flowIn - e.flowOut;
